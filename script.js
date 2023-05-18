@@ -22,20 +22,28 @@ createApp({
             })
         },
 
-        // deleteTask(task,index){
-        //     if (task.flag) {
-        //          // Qui devo passare l'indice per fare lo splice di php
-        //         this.errorMessage = "Task rimossa con successo !"
-        //         setTimeout(() => {
-        //             this.errorMessage = ""
-        //         }, 2000);
-        //     }else{
-        //         this.errorMessage = "Devi prima contrassegnare la task !!"
-        //         setTimeout(() => {
-        //             this.errorMessage = ""
-        //         }, 2000);
-        //     }
-        // },
+        deleteTask(task,index){
+            if (task.flag) {
+
+                const data = new FormData();
+                data.append('indexToDelete', index)
+
+                axios.post('server.php', data)
+                .then(result => {
+                    this.taskList = result.data
+                })
+
+                this.errorMessage = "Task rimossa con successo !"
+                setTimeout(() => {
+                    this.errorMessage = ""
+                }, 2000);
+            }else{
+                this.errorMessage = "Devi prima contrassegnare la task !!"
+                setTimeout(() => {
+                    this.errorMessage = ""
+                }, 2000);
+            }
+        },
 
         createNewObj(){
 
@@ -43,15 +51,13 @@ createApp({
             if (this.newMessageTask.length >= 5) {
                 
                 newTask = this.newMessageTask;
-                const dato = new FormData()
-                dato.append('newOne', newTask)
+                const data = new FormData()
+                data.append('newOne', newTask)
 
-                axios.post('server.php', dato)
+                axios.post('server.php', data)
                 .then(result => {
                     this.newMessageTask = '';
                     this.taskList = result.data;
-                    console.log('Risultato chiamata in post',result.data)
-                    console.log('Array this.taskList', this.taskList);
                 })
 
                 this.newMessageTask = ""
