@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do list</title>
+    <!-- favicon -->
+    <link rel="shortcut icon" href="assets/img/Todo.png" type="png">
+    <!-- Vue -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- fontAwesome -->
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css' integrity='sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==' crossorigin='anonymous'/>
+    <!-- css -->
+    <link rel="stylesheet" href="./assets/style.css">
+    
+</head>
+<body>
+    <div id="app">
+
+        <header>
+            <div class="container logo">
+                <img src="assets/img/Todo.png" alt="">
+                <span>ToDolist</span>
+            </div>
+
+            <div class="container">
+                <input  v-model.trim="newMessageTask" type="text" placeholder="Inserisci una nuova task"
+                @keyup.enter="createNewObj()">
+                <button
+                @click="createNewObj()">Aggiungi</button>
+            </div>
+
+        </header>
+
+        <main>
+            <div class="container message">
+                <h2>{{errorMessage}}</h2>
+            </div>
+            <div class="container tasks">
+
+                <h2 v-if="taskList.length === 0">Non ci sono task da completare!<i class="fa-regular fa-paper-plane" style="color: #ffffff;"></i></h2>
+
+                <ul v-if="taskList.length > 0">
+                    <li v-for="(task,index) in taskList" @click="task.flag = !task.flag ,log(task,index)">
+                        <div class="task-style">
+                            <span :class="task.flag ? 'lineTrought' : ''">{{task.message}}</span>
+                            <img v-if="task.flag" src="assets/img/Todo.png" alt="">
+                        </div>
+                        <i @click.stop="deleteTask(task,index)" class="fa-regular fa-trash-can"></i>
+                    </li>
+
+                </ul>
+            </div>
+        </main>
+
+    </div>
+    <script src="./script.js"></script>
+</body>
+</html>
