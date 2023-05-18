@@ -3,22 +3,10 @@ const {createApp} = Vue;
 createApp({
     data(){
         return{
-        taskList : [
-            {
-                message: 'Lista della spesa',
-                flag : false,
-            },
-            {
-                message: 'Finire il progetto',
-                flag : false,
-            },
-            {
-                message: 'Pushare il commit',
-                flag : false,
-            },
-        ],
+        taskList : [],
 
         errorMessage : "",
+        
         newMessageTask : "",
         
         }
@@ -27,14 +15,22 @@ createApp({
         log(){
             console.log("mi hai cliccato")
         },
+        readApi(){
+            axios.get('server.php')
+            .then( result => {
+                this.taskList = result.data
+                console.log('Risultato chiamata Api --->',result.data)
+                console.log('Risultato',this.taskList)
+            })
+        },
+
         deleteTask(task,index){
             if (task.flag) {
-                this.taskList.splice(index,1);
+                 // Qui devo passare l'indice per fare lo splice di php
                 this.errorMessage = "Task rimossa con successo !"
                 setTimeout(() => {
                     this.errorMessage = ""
                 }, 2000);
-
             }else{
                 this.errorMessage = "Devi prima contrassegnare la task !!"
                 setTimeout(() => {
@@ -42,13 +38,16 @@ createApp({
                 }, 2000);
             }
         },
+
         createNewObj(){
+
             const obj = {
                 message : this.newMessageTask,
                 flag : false
             }
+
             if (this.newMessageTask.length >= 5) {
-                this.taskList.unshift(obj)
+                //Qui passo il testo che valorizza l'elemento che devo puishare in php
                 this.newMessageTask = ""
             }else {
                 this.errorMessage = "La task deve contenere almeno 5 caratteri"
@@ -58,6 +57,9 @@ createApp({
             }
 
         }
+    },
+    mounted(){
+        this.readApi()
     }
 
 }).mount('#app')

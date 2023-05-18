@@ -41,7 +41,7 @@
             </div>
             <div class="container tasks">
 
-                <h2 v-if="taskList.length === 0">Non ci sono task da completare!<i class="fa-regular fa-paper-plane" style="color: #ffffff;"></i></h2>
+                <h2 v-if="taskList.length === 0">Non ci sono task da completare!<i class="fa-regular fa-paper-plane"></i></h2>
 
                 <ul v-if="taskList.length > 0">
                     <li v-for="(task,index) in taskList" @click="task.flag = !task.flag ,log(task,index)">
