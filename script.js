@@ -12,9 +12,7 @@ createApp({
         }
     },
     methods: {
-        log(){
-            console.log("mi hai cliccato")
-        },
+
         readApi(){
             axios.get('server.php')
             .then( result => {
@@ -24,30 +22,38 @@ createApp({
             })
         },
 
-        deleteTask(task,index){
-            if (task.flag) {
-                 // Qui devo passare l'indice per fare lo splice di php
-                this.errorMessage = "Task rimossa con successo !"
-                setTimeout(() => {
-                    this.errorMessage = ""
-                }, 2000);
-            }else{
-                this.errorMessage = "Devi prima contrassegnare la task !!"
-                setTimeout(() => {
-                    this.errorMessage = ""
-                }, 2000);
-            }
-        },
+        // deleteTask(task,index){
+        //     if (task.flag) {
+        //          // Qui devo passare l'indice per fare lo splice di php
+        //         this.errorMessage = "Task rimossa con successo !"
+        //         setTimeout(() => {
+        //             this.errorMessage = ""
+        //         }, 2000);
+        //     }else{
+        //         this.errorMessage = "Devi prima contrassegnare la task !!"
+        //         setTimeout(() => {
+        //             this.errorMessage = ""
+        //         }, 2000);
+        //     }
+        // },
 
         createNewObj(){
 
-            const obj = {
-                message : this.newMessageTask,
-                flag : false
-            }
-
+            
             if (this.newMessageTask.length >= 5) {
-                //Qui passo il testo che valorizza l'elemento che devo puishare in php
+                
+                newTask = this.newMessageTask;
+                const dato = new FormData()
+                dato.append('newOne', newTask)
+
+                axios.post('server.php', dato)
+                .then(result => {
+                    this.newMessageTask = '';
+                    this.taskList = result.data;
+                    console.log('Risultato chiamata in post',result.data)
+                    console.log('Array this.taskList', this.taskList);
+                })
+
                 this.newMessageTask = ""
             }else {
                 this.errorMessage = "La task deve contenere almeno 5 caratteri"
@@ -56,10 +62,11 @@ createApp({
                 }, 2000);
             }
 
-        }
+        },
     },
     mounted(){
         this.readApi()
+
     }
 
 }).mount('#app')
