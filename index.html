@@ -44,7 +44,7 @@
                 <h2 v-if="taskList.length === 0">Non ci sono task da completare!<i class="fa-regular fa-paper-plane"></i></h2>
 
                 <ul v-if="taskList.length > 0">
-                    <li v-for="(task,index) in taskList" @click="task.flag = !task.flag ,log(task,index)">
+                    <li v-for="(task,index) in taskList" @click.stop="changeStatus(index)">
                         <div class="task-style">
                             <span :class="task.flag ? 'lineTrought' : ''">{{task.message}}</span>
                             <img v-if="task.flag" src="assets/img/Todo.png" alt="">

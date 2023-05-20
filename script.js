@@ -3,7 +3,13 @@ const {createApp} = Vue;
 createApp({
     data(){
         return{
-        taskList : [],
+        taskList : [
+
+
+
+
+
+        ],
 
         errorMessage : "",
         
@@ -17,8 +23,8 @@ createApp({
             axios.get('server.php')
             .then( result => {
                 this.taskList = result.data
-                console.log('Risultato chiamata Api --->',result.data)
-                console.log('Risultato',this.taskList)
+                // console.log('Risultato chiamata Api --->',result.data)
+                // console.log('Risultato',this.taskList)
             })
         },
 
@@ -58,6 +64,7 @@ createApp({
                 .then(result => {
                     this.newMessageTask = '';
                     this.taskList = result.data;
+                    console.log(result.data);
                 })
 
                 this.newMessageTask = ""
@@ -69,6 +76,20 @@ createApp({
             }
 
         },
+
+        changeStatus(index){
+
+            index.flag = !index.flag;
+
+            const data = new FormData();
+            data.append('indexToChange', index)
+
+            axios.post('server.php', data)
+            .then(result => {
+                this.taskList = result.data;
+            })
+
+        }
     },
     mounted(){
         this.readApi()

@@ -1,8 +1,11 @@
 <?php
+    #Specifico il "formato" delle informazioni
+    header('Content_Type: application/json');
+    
     #Ricevo
     $result = file_get_contents('db.json');
-    #Traduco in php
-    $phpDecode = json_decode($result);
+    #Traduco in php ?? TRUE??
+    $phpDecode = json_decode($result, true);
 
     #Qui devo modificare l'array prima di restituirlo.
     if(isset($_POST['newOne'])){
@@ -24,9 +27,14 @@
         file_put_contents('db.json', json_encode($phpDecode));
     }
 
+    if (isset($_POST['indexToChange'])) {
+        $indexToCheck = $_POST['indexToChange'];
 
-    #Specifico il "formato" delle informazioni
-    header('Content_Type: application/json');
+        $phpDecode[$indexToCheck]['flag'] = !$phpDecode[$indexToCheck]['flag'];
+        file_put_contents('db.json', json_encode($phpDecode));
+    }
+
+
 
     #Codifico in formato json
     $jsonEncode = json_encode($phpDecode);
@@ -34,4 +42,4 @@
     #Ristampo il db.
     echo $jsonEncode;
 
-    file_put_contents('db.json', $jsonEncode);
+    // file_put_contents('db.json', $jsonEncode);
